@@ -34,23 +34,21 @@ public class MessageBroker {
 
     }
 
-    public synchronized Message consumeMessage(MessageConsumerTask messageConsumerTask) {
+    public synchronized Optional<Message> consumeMessage(MessageConsumerTask messageConsumerTask) {
         try{
             while(!this.isShouldBeConsume(messageConsumerTask)) {
-                System.out.println(Thread.currentThread().getName() + "очередь пуста");
                 super.wait();
             }
 
                 final Message consumedMessage =  this.messages.poll();
                 super.notify();
                 System.out.printf(MESSAGE_CONSUMED, consumedMessage, messageConsumerTask.getName());
-                /* return Optional.of(consumedMessage);*/
-                return consumedMessage;
+                 return Optional.of(consumedMessage);
+
 
         } catch (final InterruptedException interruptedException) {
             Thread.currentThread().interrupt();
             throw new RuntimeException(interruptedException);
-          /*  return Optional.empty();*/
         }
     }
 

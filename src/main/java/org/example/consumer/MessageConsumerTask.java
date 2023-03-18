@@ -20,6 +20,7 @@ public class MessageConsumerTask implements Runnable {
 
     public String getName() {
         return this.name;
+
     }
 
     public int getMinMessagesToConsume(){
@@ -32,9 +33,9 @@ public class MessageConsumerTask implements Runnable {
         try{
             while (!Thread.currentThread().isInterrupted()) {
                 Thread.sleep(1000);
-              /*  final Optional<Message> optionalConsumedMessage = this.messageBroker.consumeMessage();*/
-                Message optionalConsumedMessage = this.messageBroker.consumeMessage(this);
-                /*optionalConsumedMessage.orElseThrow(MessageConsumeException::new);*/
+                final Optional<Message> optionalConsumedMessage = this.messageBroker.consumeMessage(this);
+               /* Message optionalConsumedMessage = this.messageBroker.consumeMessage(this);*/
+                optionalConsumedMessage.orElseThrow(MessageConsumeException::new);
             }
         } catch (final InterruptedException interruptedException) {
             Thread.currentThread().interrupt();
